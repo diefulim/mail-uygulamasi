@@ -1,0 +1,41 @@
+// Aşağıdakiler import edilecekler
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import java.util.Properties;
+
+// Aşağıdakiler ise mail gönderme kodları
+
+                             String gonderen = "ugur.selam0@gmail.com";
+                             String sifre = "imwt jrtk fwlz udxb";
+                             String alici = "ugur.selam0@gmail.com";
+				
+                             // SMTP sunucusu ayarları
+			      Properties properties = new Properties();
+			      properties.put("mail.smtp.auth", "true");
+			      properties.put("mail.smtp.starttls.enable", "true");
+			      properties.put("mail.smtp.host", "smtp.gmail.com");
+			      properties.put("mail.smtp.port", "587");
+
+			      // Oturum oluşturma
+			      Session session = Session.getInstance(properties, new Authenticator() {
+			          @Override
+			          protected PasswordAuthentication getPasswordAuthentication() {
+			              return new PasswordAuthentication(gonderen, sifre);
+			          }
+			      });
+			      
+			        try {
+			            // Mesaj oluşturma
+			            Message message = new MimeMessage(session);
+			            message.setFrom(new InternetAddress(gonderen));// Gönderen
+			            message.setRecipient(Message.RecipientType.TO, // Alıcı
+			                    new InternetAddress(alici));
+			            message.setSubject("Java ile Mail Gönderme"); // Konu
+			            message.setText("Test mail");// İçerik
+
+			            // Mesajı gönder
+			            Transport.send(message);
+			            System.out.println("Mail başarıyla gönderildi!");
+			        } catch (Exception error) {
+			        	error.printStackTrace();
+			        }
